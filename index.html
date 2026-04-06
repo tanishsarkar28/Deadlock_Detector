@@ -32,7 +32,6 @@
     min-height: 100vh;
     overflow-x: hidden;
   }
-  /* Grid noise background */
   body::before {
     content:'';
     position:fixed; inset:0;
@@ -44,7 +43,6 @@
   }
   .app { position:relative; z-index:1; max-width:1400px; margin:0 auto; padding:20px; }
 
-  /* HEADER */
   header {
     display:flex; align-items:center; justify-content:space-between;
     border-bottom: 1px solid var(--border);
@@ -65,15 +63,12 @@
   }
   .status-pill.safe { border-color:var(--accent3); color:var(--accent3); }
   .status-pill.danger { border-color:var(--accent2); color:var(--accent2); animation: blink 1s infinite; }
-  .status-pill.warn { border-color:var(--warn); color:var(--warn); }
   .dot { width:7px; height:7px; border-radius:50%; background:currentColor; }
   @keyframes blink { 50%{ opacity:0.4; } }
 
-  /* MAIN GRID */
   .main-grid { display:grid; grid-template-columns:340px 1fr; gap:20px; }
   @media(max-width:900px){ .main-grid{ grid-template-columns:1fr; } }
 
-  /* PANELS */
   .panel {
     background: var(--panel);
     border: 1px solid var(--border);
@@ -91,7 +86,6 @@
   .panel-header .icon { font-size:14px; }
   .panel-body { padding:16px; }
 
-  /* FORM */
   label { font-family:var(--mono); font-size:11px; color:var(--text-dim); letter-spacing:1px; display:block; margin-bottom:5px; margin-top:12px; }
   label:first-child { margin-top:0; }
   input, select {
@@ -101,7 +95,6 @@
     transition: border-color 0.2s;
   }
   input:focus, select:focus { border-color:var(--accent); box-shadow:var(--glow); }
-  .input-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
 
   .btn {
     font-family:var(--head); font-size:12px; font-weight:700;
@@ -109,59 +102,38 @@
     border:none; border-radius:2px; cursor:pointer;
     transition: all 0.2s; width:100%;
   }
-  .btn-primary {
-    background: var(--accent); color:#000;
-    box-shadow: 0 0 20px #00e5ff55;
-    margin-top:14px;
-  }
+  .btn-primary { background: var(--accent); color:#000; box-shadow: 0 0 20px #00e5ff55; margin-top:14px; }
   .btn-primary:hover { background:#fff; box-shadow:0 0 30px #00e5ffaa; }
-  .btn-secondary {
-    background:transparent; color:var(--accent2);
-    border:1px solid var(--accent2);
-    margin-top:8px;
-  }
+  .btn-secondary { background:transparent; color:var(--accent2); border:1px solid var(--accent2); margin-top:8px; }
   .btn-secondary:hover { background:#ff4d6d15; }
-  .btn-warn {
-    background:transparent; color:var(--warn);
-    border:1px solid var(--warn);
-    margin-top:8px;
-  }
+  .btn-warn { background:transparent; color:var(--warn); border:1px solid var(--warn); margin-top:8px; }
   .btn-warn:hover { background:#ffb80015; }
 
-  /* ALLOCATION TABLE */
-  .alloc-table {
-    width:100%; border-collapse:collapse;
-    font-family:var(--mono); font-size:12px;
-    margin-top:12px;
-  }
-  .alloc-table th {
-    background:#071018; color:var(--text-dim);
-    padding:6px 8px; text-align:center;
-    border:1px solid var(--border); font-weight:400;
-    letter-spacing:1px;
-  }
-  .alloc-table td {
-    padding:5px 8px; text-align:center;
-    border:1px solid var(--border);
-  }
-  .alloc-table tr:hover td { background:#0d1e3088; }
-  .alloc-table td.process { color:var(--accent); font-weight:600; }
-  .alloc-table td.resource { color:var(--accent3); }
-  .alloc-table td.deadlock-row { background:#ff4d6d18; color:var(--accent2); }
-
-  /* CANVAS AREA */
   #graph-container {
-    position:relative; width:100%; height:460px;
+    position:relative; width:100%; height:500px;
     background:#030c14;
     border-radius:2px; overflow:hidden;
   }
-  #rag-canvas { width:100%; height:100%; display:block; }
+  #rag-canvas {
+    width:100%; height:100%; display:block;
+    cursor: default;
+  }
+  #rag-canvas.dragging { cursor: grabbing; }
+  #rag-canvas.hovering { cursor: grab; }
+
   .canvas-hint {
     position:absolute; bottom:12px; right:12px;
     font-family:var(--mono); font-size:10px; color:var(--text-dim);
+    pointer-events:none;
+  }
+  .drag-hint {
+    position:absolute; top:12px; right:12px;
+    font-family:var(--mono); font-size:10px; color:var(--text-dim);
+    background:#0a1520cc; border:1px solid var(--border);
+    padding:4px 10px; border-radius:2px;
+    pointer-events:none;
   }
 
-  /* RESULTS */
   .result-section { margin-top:20px; }
   .result-title {
     font-family:var(--head); font-size:13px; letter-spacing:2px;
@@ -175,19 +147,10 @@
     background:#ff4d6d10; border:1px solid #ff4d6d55;
     border-radius:2px; padding:12px 14px; margin-bottom:10px;
   }
-  .cycle-path {
-    font-family:var(--mono); font-size:12px; color:var(--accent2);
-    margin-bottom:8px; letter-spacing:1px;
-  }
+  .cycle-path { font-family:var(--mono); font-size:12px; color:var(--accent2); margin-bottom:8px; letter-spacing:1px; }
   .resolution-list { list-style:none; }
-  .resolution-list li {
-    font-size:13px; color:var(--text);
-    padding:4px 0; padding-left:16px; position:relative;
-  }
-  .resolution-list li::before {
-    content:'▸'; position:absolute; left:0;
-    color:var(--warn); font-size:10px; top:5px;
-  }
+  .resolution-list li { font-size:13px; color:var(--text); padding:4px 0; padding-left:16px; position:relative; }
+  .resolution-list li::before { content:'▸'; position:absolute; left:0; color:var(--warn); font-size:10px; top:5px; }
 
   .safe-msg {
     background:#39ff1410; border:1px solid #39ff1455;
@@ -196,7 +159,6 @@
     display:flex; align-items:center; gap:10px;
   }
 
-  /* ALGO LOG */
   #algo-log {
     background:#030c14; border:1px solid var(--border);
     border-radius:2px; padding:10px 12px; margin-top:12px;
@@ -208,7 +170,6 @@
   .log-ok { color:var(--accent3); }
   .log-info { color:var(--accent); }
 
-  /* PRESETS */
   .preset-row { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
   .preset-btn {
     font-family:var(--mono); font-size:10px; padding:5px 10px;
@@ -218,7 +179,6 @@
   }
   .preset-btn:hover { border-color:var(--accent); color:var(--accent); }
 
-  /* Tabs */
   .tab-bar { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:16px; }
   .tab {
     font-family:var(--mono); font-size:11px; letter-spacing:1px;
@@ -227,14 +187,10 @@
   }
   .tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 
-  /* scrollbar */
   ::-webkit-scrollbar { width:4px; height:4px; }
   ::-webkit-scrollbar-track { background:#071018; }
   ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
 
-  .matrix-grid {
-    display:grid; gap:4px; margin-top:8px;
-  }
   .matrix-cell {
     background:#071018; border:1px solid var(--border);
     padding:4px; text-align:center;
@@ -263,10 +219,7 @@
   </header>
 
   <div class="main-grid">
-    <!-- LEFT: CONFIG PANEL -->
     <div style="display:flex;flex-direction:column;gap:16px;">
-      
-      <!-- System Config -->
       <div class="panel">
         <div class="panel-header"><span class="icon">⚙</span> SYSTEM CONFIGURATION</div>
         <div class="panel-body">
@@ -283,7 +236,6 @@
         </div>
       </div>
 
-      <!-- Allocation Matrix -->
       <div class="panel" id="matrix-panel" style="display:none">
         <div class="panel-header"><span class="icon">▦</span> RESOURCE ALLOCATION</div>
         <div class="panel-body">
@@ -299,21 +251,18 @@
       </div>
     </div>
 
-    <!-- RIGHT: VISUALIZATION + RESULTS -->
     <div style="display:flex;flex-direction:column;gap:16px;">
-
-      <!-- Graph -->
       <div class="panel">
         <div class="panel-header"><span class="icon">◈</span> RESOURCE ALLOCATION GRAPH (RAG)</div>
         <div class="panel-body" style="padding:10px">
           <div id="graph-container">
             <canvas id="rag-canvas"></canvas>
-            <div class="canvas-hint">RAG — circles=processes, squares=resources</div>
+            <div class="canvas-hint">● circles = processes &nbsp;|&nbsp; ■ squares = resources</div>
+            <div class="drag-hint">✥ drag nodes to rearrange</div>
           </div>
         </div>
       </div>
 
-      <!-- Results -->
       <div class="panel" id="results-panel">
         <div class="panel-header"><span class="icon">◉</span> ANALYSIS RESULTS</div>
         <div class="panel-body">
@@ -334,9 +283,25 @@
 // STATE
 // ============================================================
 let nProc = 4, nRes = 3;
-let allocated = []; // [proc][res]
-let requested = []; // [proc][res]
+let allocated = [];
+let requested = [];
 let activeTab = 'alloc';
+let lastCycles = null;
+
+// ── Node positions (persisted across redraws) ─────────────────
+// nodePositions['P0'] = {x, y}, nodePositions['R2'] = {x, y}
+let nodePositions = {};
+
+// ── Drag state ────────────────────────────────────────────────
+let drag = {
+  active: false,
+  nodeKey: null,   // 'P0', 'R1', etc.
+  offsetX: 0,
+  offsetY: 0
+};
+
+const NODE_R   = 24;   // process circle radius
+const RES_HALF = 18;   // resource square half-size
 
 // ============================================================
 // PRESETS
@@ -366,22 +331,61 @@ function loadPreset(name) {
   document.getElementById('num-res').value = p.r;
   allocated = p.alloc.map(r=>[...r]);
   requested = p.req.map(r=>[...r]);
+  nodePositions = {};   // reset positions on new preset
+  lastCycles = null;
   renderMatrices();
-  document.getElementById('matrix-panel').style.display='block';
+  document.getElementById('matrix-panel').style.display = 'block';
+  initPositions();
   drawRAG();
 }
 
 function generateMatrix() {
-  nProc = parseInt(document.getElementById('num-proc').value)||4;
-  nRes  = parseInt(document.getElementById('num-res').value)||3;
-  nProc = Math.min(8,Math.max(2,nProc));
-  nRes  = Math.min(6,Math.max(1,nRes));
-  allocated = Array.from({length:nProc},()=>Array(nRes).fill(0));
-  requested = Array.from({length:nProc},()=>Array(nRes).fill(0));
+  nProc = Math.min(8, Math.max(2, parseInt(document.getElementById('num-proc').value)||4));
+  nRes  = Math.min(6, Math.max(1, parseInt(document.getElementById('num-res').value)||3));
+  allocated = Array.from({length:nProc}, ()=>Array(nRes).fill(0));
+  requested = Array.from({length:nProc}, ()=>Array(nRes).fill(0));
+  nodePositions = {};
+  lastCycles = null;
   renderMatrices();
-  document.getElementById('matrix-panel').style.display='block';
+  document.getElementById('matrix-panel').style.display = 'block';
   clearResults();
+  initPositions();
   drawRAG();
+}
+
+// ============================================================
+// POSITION MANAGEMENT
+// ============================================================
+function initPositions() {
+  const canvas  = document.getElementById('rag-canvas');
+  const W = canvas.clientWidth  || 700;
+  const H = canvas.clientHeight || 500;
+
+  const cx = W / 2, cy = H / 2;
+
+  // Processes arranged on a left-biased ellipse
+  for (let p = 0; p < nProc; p++) {
+    const key = `P${p}`;
+    if (!nodePositions[key]) {
+      const angle = (p / nProc) * 2 * Math.PI - Math.PI / 2;
+      nodePositions[key] = {
+        x: cx * 0.6 + Math.cos(angle) * cx * 0.45,
+        y: cy      + Math.sin(angle) * cy * 0.70
+      };
+    }
+  }
+
+  // Resources arranged on a right-biased ellipse
+  for (let r = 0; r < nRes; r++) {
+    const key = `R${r}`;
+    if (!nodePositions[key]) {
+      const angle = (r / nRes) * 2 * Math.PI - Math.PI / 2;
+      nodePositions[key] = {
+        x: cx * 1.5 + Math.cos(angle) * cx * 0.32,
+        y: cy       + Math.sin(angle) * cy * 0.65
+      };
+    }
+  }
 }
 
 // ============================================================
@@ -394,145 +398,187 @@ function renderMatrices() {
 
 function renderOneMatrix(containerId, matrix, type) {
   const wrap = document.getElementById(containerId);
-  const resLabels = Array.from({length:nRes},(_,i)=>`R${i}`);
-  let html = `<div style="overflow-x:auto">`;
-  html += `<table style="border-collapse:collapse;margin:0 auto">`;
-  // header
+  const resLabels = Array.from({length:nRes}, (_, i) => `R${i}`);
+  let html = `<div style="overflow-x:auto"><table style="border-collapse:collapse;margin:0 auto">`;
   html += `<tr><th style="font-family:var(--mono);font-size:10px;color:var(--text-dim);padding:4px 6px"></th>`;
-  resLabels.forEach(r=>{ html+=`<th class="matrix-label" style="padding:4px 6px">${r}</th>`; });
+  resLabels.forEach(r => { html += `<th class="matrix-label" style="padding:4px 6px">${r}</th>`; });
   html += `</tr>`;
-  for(let p=0;p<nProc;p++){
-    html+=`<tr><td style="font-family:var(--mono);font-size:10px;color:var(--accent);padding:4px 8px 4px 0">P${p}</td>`;
-    for(let r=0;r<nRes;r++){
+  for (let p = 0; p < nProc; p++) {
+    html += `<tr><td style="font-family:var(--mono);font-size:10px;color:var(--accent);padding:4px 8px 4px 0">P${p}</td>`;
+    for (let r = 0; r < nRes; r++) {
       const val = matrix[p][r];
       const cls = type==='allocated' && val>0 ? 'allocated' : (type==='requested' && val>0 ? 'requested' : '');
-      html+=`<td class="matrix-cell ${cls}" onclick="toggleCell('${type}',${p},${r})" title="Click to toggle">${val}</td>`;
+      html += `<td class="matrix-cell ${cls}" onclick="toggleCell('${type}',${p},${r})">${val}</td>`;
     }
-    html+=`</tr>`;
+    html += `</tr>`;
   }
-  html+=`</table></div>`;
-  html+=`<p style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:8px;text-align:center">Click cells to toggle 0/1</p>`;
+  html += `</table></div><p style="font-family:var(--mono);font-size:10px;color:var(--text-dim);margin-top:8px;text-align:center">Click cells to toggle 0/1</p>`;
   wrap.innerHTML = html;
 }
 
 function toggleCell(type, p, r) {
-  if(type==='allocated') {
-    allocated[p][r] = allocated[p][r]>0 ? 0 : 1;
-  } else {
-    requested[p][r] = requested[p][r]>0 ? 0 : 1;
-  }
+  if (type === 'allocated') allocated[p][r] = allocated[p][r] > 0 ? 0 : 1;
+  else                       requested[p][r] = requested[p][r] > 0 ? 0 : 1;
   renderMatrices();
-  drawRAG();
+  drawRAG(lastCycles);
 }
 
 function switchTab(tab) {
   activeTab = tab;
-  document.querySelectorAll('.tab').forEach((t,i)=>{
+  document.querySelectorAll('.tab').forEach((t, i) => {
     t.classList.toggle('active', (i===0&&tab==='alloc')||(i===1&&tab==='request'));
   });
-  document.getElementById('alloc-matrix-wrap').style.display = tab==='alloc'?'':'none';
-  document.getElementById('request-matrix-wrap').style.display = tab==='request'?'':'none';
+  document.getElementById('alloc-matrix-wrap').style.display  = tab==='alloc'   ? '' : 'none';
+  document.getElementById('request-matrix-wrap').style.display = tab==='request' ? '' : 'none';
 }
 
 // ============================================================
-// DEADLOCK DETECTION — Cycle detection in RAG
+// DRAG & DROP
+// ============================================================
+function getCanvasPos(e) {
+  const canvas = document.getElementById('rag-canvas');
+  const rect   = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return {
+    x: (clientX - rect.left) * scaleX,
+    y: (clientY - rect.top)  * scaleY
+  };
+}
+
+function hitTest(mx, my) {
+  // Test processes (circles)
+  for (let p = 0; p < nProc; p++) {
+    const key = `P${p}`;
+    const pos = nodePositions[key];
+    if (!pos) continue;
+    const dx = mx - pos.x, dy = my - pos.y;
+    if (Math.sqrt(dx*dx + dy*dy) <= NODE_R) return key;
+  }
+  // Test resources (squares)
+  for (let r = 0; r < nRes; r++) {
+    const key = `R${r}`;
+    const pos = nodePositions[key];
+    if (!pos) continue;
+    if (Math.abs(mx - pos.x) <= RES_HALF && Math.abs(my - pos.y) <= RES_HALF) return key;
+  }
+  return null;
+}
+
+function onPointerDown(e) {
+  const { x, y } = getCanvasPos(e);
+  const key = hitTest(x, y);
+  if (key) {
+    drag.active  = true;
+    drag.nodeKey = key;
+    drag.offsetX = x - nodePositions[key].x;
+    drag.offsetY = y - nodePositions[key].y;
+    document.getElementById('rag-canvas').classList.add('dragging');
+    e.preventDefault();
+  }
+}
+
+function onPointerMove(e) {
+  const canvas = document.getElementById('rag-canvas');
+  const { x, y } = getCanvasPos(e);
+
+  if (drag.active && drag.nodeKey) {
+    // Clamp within canvas bounds with padding
+    const pad = 30;
+    nodePositions[drag.nodeKey] = {
+      x: Math.max(pad, Math.min(canvas.width  - pad, x - drag.offsetX)),
+      y: Math.max(pad, Math.min(canvas.height - pad, y - drag.offsetY))
+    };
+    drawRAG(lastCycles);
+    e.preventDefault();
+  } else {
+    // Hover cursor
+    const hit = hitTest(x, y);
+    canvas.classList.toggle('hovering', !!hit);
+  }
+}
+
+function onPointerUp(e) {
+  drag.active  = false;
+  drag.nodeKey = null;
+  const canvas = document.getElementById('rag-canvas');
+  canvas.classList.remove('dragging');
+}
+
+// ============================================================
+// DEADLOCK DETECTION
 // ============================================================
 function runDetection() {
   const log = [];
-  log.push({type:'info', msg:`Starting deadlock detection: ${nProc} processes, ${nRes} resources`});
+  log.push({type:'info', msg:`Starting detection: ${nProc} processes, ${nRes} resources`});
 
-  // Build adjacency: 
-  //  P->R edge: process P requests resource R (wait-for)
-  //  R->P edge: resource R is allocated to process P (held-by)
-  // Deadlock = cycle in this bipartite graph
+  const N   = nProc + nRes;
+  const adj = Array.from({length:N}, ()=>[]);
 
-  // Nodes: P0..Pn-1 (indices 0..nProc-1), R0..Rm-1 (indices nProc..nProc+nRes-1)
-  const N = nProc + nRes;
-  const adj = Array.from({length:N},()=>[]);
-
-  for(let p=0;p<nProc;p++){
-    for(let r=0;r<nRes;r++){
-      if(requested[p][r]>0) {
-        // P -> R (request edge)
-        adj[p].push(nProc+r);
-        log.push({type:'step', msg:`P${p} → R${r} (requests)`});
-      }
-      if(allocated[p][r]>0) {
-        // R -> P (assignment edge)
-        adj[nProc+r].push(p);
-        log.push({type:'step', msg:`R${r} → P${p} (allocated)`});
-      }
+  for (let p = 0; p < nProc; p++) {
+    for (let r = 0; r < nRes; r++) {
+      if (requested[p][r] > 0) { adj[p].push(nProc+r); log.push({type:'step', msg:`P${p} → R${r} (requests)`}); }
+      if (allocated[p][r] > 0) { adj[nProc+r].push(p); log.push({type:'step', msg:`R${r} → P${p} (allocated)`}); }
     }
   }
 
-  // Find all cycles using DFS (Johnson's algo simplified)
-  const cycles = [];
+  const cycles  = [];
   const visited = new Array(N).fill(false);
   const inStack = new Array(N).fill(false);
-  const pathStack = [];
+  const path    = [];
 
-  function dfs(node, startNode) {
+  function dfs(node) {
     visited[node] = true;
     inStack[node] = true;
-    pathStack.push(node);
-    for(const neighbor of adj[node]) {
-      if(!visited[neighbor]) {
-        dfs(neighbor, startNode);
-      } else if(inStack[neighbor]) {
-        // Found a back edge — extract cycle
-        const cycleStart = pathStack.indexOf(neighbor);
-        if(cycleStart !== -1) {
-          const cycle = pathStack.slice(cycleStart);
-          // Only include cycles that involve at least one process and one resource
-          const hasProc = cycle.some(n=>n<nProc);
-          const hasRes  = cycle.some(n=>n>=nProc);
-          if(hasProc && hasRes) {
-            const cycleKey = [...cycle].sort().join(',');
-            const exists = cycles.some(c=>[...c].sort().join(',')===cycleKey);
-            if(!exists) cycles.push([...cycle]);
+    path.push(node);
+    for (const nb of adj[node]) {
+      if (!visited[nb]) { dfs(nb); }
+      else if (inStack[nb]) {
+        const ci = path.indexOf(nb);
+        if (ci !== -1) {
+          const cycle = path.slice(ci);
+          const hasP = cycle.some(n => n < nProc);
+          const hasR = cycle.some(n => n >= nProc);
+          if (hasP && hasR) {
+            const sig = [...cycle].sort().join(',');
+            if (!cycles.some(c => [...c].sort().join(',') === sig)) cycles.push([...cycle]);
           }
         }
       }
     }
-    pathStack.pop();
+    path.pop();
     inStack[node] = false;
   }
 
-  for(let i=0;i<N;i++) {
-    if(!visited[i]) dfs(i,i);
-  }
+  for (let i = 0; i < N; i++) if (!visited[i]) dfs(i);
 
   const hasDeadlock = cycles.length > 0;
+  lastCycles = hasDeadlock ? cycles : null;
 
-  // Set status
   const pill = document.getElementById('system-status-pill');
   const stxt = document.getElementById('status-text');
-  if(hasDeadlock){
-    pill.className='status-pill danger';
-    stxt.textContent='DEADLOCK DETECTED';
-  } else {
-    pill.className='status-pill safe';
-    stxt.textContent='SYSTEM SAFE';
-  }
+  if (hasDeadlock) { pill.className='status-pill danger'; stxt.textContent='DEADLOCK DETECTED'; }
+  else             { pill.className='status-pill safe';   stxt.textContent='SYSTEM SAFE'; }
 
-  // Display results
   displayResults(hasDeadlock, cycles, log);
-  drawRAG(cycles);
+  drawRAG(lastCycles);
   renderLog(log, hasDeadlock);
 }
 
 // ============================================================
-// RESULTS DISPLAY
+// RESULTS
 // ============================================================
 function displayResults(hasDeadlock, cycles, log) {
   const el = document.getElementById('results-content');
-  if(!hasDeadlock){
+  if (!hasDeadlock) {
     el.innerHTML = `
       <div class="safe-msg">
         <span style="font-size:24px">✓</span>
         <div>
           <div style="font-size:14px;font-weight:700;margin-bottom:4px">NO DEADLOCK DETECTED</div>
-          <div style="font-size:12px;opacity:0.7">System is in a safe state. All processes can complete execution.</div>
+          <div style="font-size:12px;opacity:0.7">System is in a safe state. All processes can complete.</div>
         </div>
       </div>
       <div class="result-section">
@@ -548,14 +594,16 @@ function displayResults(hasDeadlock, cycles, log) {
   }
 
   let html = `<div class="result-title danger">⚠ ${cycles.length} DEADLOCK CYCLE${cycles.length>1?'S':''} DETECTED</div>`;
-
   cycles.forEach((cycle, idx) => {
-    const pathStr = cycle.map(n => n<nProc ? `P${n}` : `R${n-nProc}`).join(' → ') + ` → ` + (cycle[0]<nProc?`P${cycle[0]}`:`R${cycle[0]-nProc}`);
+    const pathStr = cycle.map(n => n<nProc ? `P${n}` : `R${n-nProc}`).join(' → ')
+                  + ' → ' + (cycle[0]<nProc ? `P${cycle[0]}` : `R${cycle[0]-nProc}`);
     const procs = cycle.filter(n=>n<nProc).map(n=>`P${n}`);
     const res   = cycle.filter(n=>n>=nProc).map(n=>`R${n-nProc}`);
-
-    const resolutions = generateResolutions(procs, res, idx);
-
+    const strategies = [
+      `Preempt resource ${res[0]||'R0'} from process ${procs[procs.length-1]||'P0'} and reallocate`,
+      `Terminate process ${procs[idx%procs.length]||'P0'} (lowest priority) to break the cycle`,
+      `Apply resource ordering: require all processes request ${res.join(', ')} in ascending order`,
+    ];
     html += `
     <div class="cycle-card">
       <div style="font-size:11px;font-family:var(--mono);color:var(--text-dim);margin-bottom:6px">CYCLE #${idx+1}</div>
@@ -564,11 +612,9 @@ function displayResults(hasDeadlock, cycles, log) {
         Involved: ${procs.join(', ')} | Resources: ${res.join(', ')}
       </div>
       <div style="font-size:12px;color:var(--warn);font-family:var(--mono);margin-bottom:6px">▸ RESOLUTION STRATEGIES:</div>
-      <ul class="resolution-list">${resolutions.map(r=>`<li>${r}</li>`).join('')}</ul>
+      <ul class="resolution-list">${strategies.map(s=>`<li>${s}</li>`).join('')}</ul>
     </div>`;
   });
-
-  // General strategies
   html += `
   <div class="result-section">
     <div class="result-title" style="color:var(--warn)">PREVENTION RECOMMENDATIONS</div>
@@ -577,48 +623,34 @@ function displayResults(hasDeadlock, cycles, log) {
       <li><b>Wait-Die / Wound-Wait:</b> Use timestamp-based preemption schemes to avoid circular waits</li>
       <li><b>Banker's Algorithm:</b> Use safe-state checks before granting any resource request</li>
       <li><b>Timeout & Rollback:</b> Set timeouts on resource holds; rollback and retry on expiry</li>
-      <li><b>Single Lock:</b> For simple systems, serialize access with a global mutex</li>
     </ul>
   </div>`;
-
   el.innerHTML = html;
 }
 
-function generateResolutions(procs, res, idx) {
-  const strategies = [
-    `Preempt resource ${res[0]||'R0'} from process ${procs[procs.length-1]||'P0'} and reallocate`,
-    `Terminate process ${procs[idx%procs.length]||'P0'} (lowest priority) to break the cycle`,
-    `Apply resource ordering: ensure all processes request ${res.join(',')} in ascending order`,
-    `Use rollback: checkpoint processes ${procs.join(',')} and retry with Banker's safe sequence`,
-  ];
-  return strategies.slice(0,3);
-}
-
-// ============================================================
-// ALGORITHM LOG
-// ============================================================
 function renderLog(log, hasDeadlock) {
   const el = document.getElementById('algo-log');
   let html = '';
-  log.forEach(entry => {
-    const cls = entry.type==='cycle'?'log-cycle':entry.type==='ok'?'log-ok':entry.type==='info'?'log-info':'log-step';
-    html += `<div class="${cls}">&gt; ${entry.msg}</div>`;
+  log.forEach(e => {
+    const cls = e.type==='cycle'?'log-cycle':e.type==='ok'?'log-ok':e.type==='info'?'log-info':'log-step';
+    html += `<div class="${cls}">&gt; ${e.msg}</div>`;
   });
-  if(hasDeadlock){
-    html+=`<div class="log-cycle">&gt; RESULT: DEADLOCK STATE CONFIRMED</div>`;
-  } else {
-    html+=`<div class="log-ok">&gt; RESULT: SYSTEM IS IN SAFE STATE</div>`;
-  }
+  html += hasDeadlock
+    ? `<div class="log-cycle">&gt; RESULT: DEADLOCK STATE CONFIRMED</div>`
+    : `<div class="log-ok">&gt; RESULT: SYSTEM IS IN SAFE STATE</div>`;
   el.innerHTML = html;
   el.scrollTop = el.scrollHeight;
 }
 
 function clearResults() {
-  document.getElementById('results-content').innerHTML=`<div style="color:var(--text-dim);font-family:var(--mono);font-size:12px;text-align:center;padding:20px 0;">Configure system and run detection to see results</div>`;
-  document.getElementById('algo-log').innerHTML='';
+  document.getElementById('results-content').innerHTML =
+    `<div style="color:var(--text-dim);font-family:var(--mono);font-size:12px;text-align:center;padding:20px 0;">Configure system and run detection to see results</div>`;
+  document.getElementById('algo-log').innerHTML = '';
   const pill = document.getElementById('system-status-pill');
-  pill.className='status-pill'; pill.style='border-color:var(--text-dim);color:var(--text-dim)';
-  document.getElementById('status-text').textContent='IDLE';
+  pill.className = 'status-pill';
+  pill.style = 'border-color:var(--text-dim);color:var(--text-dim)';
+  document.getElementById('status-text').textContent = 'IDLE';
+  lastCycles = null;
   drawRAG();
 }
 
@@ -626,162 +658,182 @@ function clearResults() {
 // RAG CANVAS DRAWING
 // ============================================================
 function drawRAG(deadlockCycles) {
-  const canvas = document.getElementById('rag-canvas');
+  const canvas    = document.getElementById('rag-canvas');
   const container = document.getElementById('graph-container');
-  canvas.width = container.clientWidth;
+  canvas.width  = container.clientWidth;
   canvas.height = container.clientHeight;
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
 
-  ctx.clearRect(0,0,W,H);
+  ctx.clearRect(0, 0, W, H);
+  if (!allocated.length) return;
 
-  if(!allocated.length) return;
+  // Make sure positions exist for current config
+  initPositions();
 
-  // Layout: processes on left arc, resources on right arc
-  const procPositions = [];
-  const resPositions  = [];
+  // Build deadlock node set
+  const dlNodes = new Set();
+  if (deadlockCycles) deadlockCycles.forEach(c => c.forEach(n => dlNodes.add(n)));
 
-  const cx = W/2, cy = H/2;
-  const pRad = Math.min(W,H)*0.32;
-  const rRad = Math.min(W,H)*0.18;
-
-  for(let p=0;p<nProc;p++){
-    const angle = (p/nProc)*2*Math.PI - Math.PI/2;
-    procPositions.push({
-      x: cx - pRad*0.5 + Math.cos(angle)*pRad*0.55,
-      y: cy + Math.sin(angle)*pRad*0.55,
-      label:`P${p}`
-    });
-  }
-  for(let r=0;r<nRes;r++){
-    const angle = (r/nRes)*2*Math.PI - Math.PI/2;
-    resPositions.push({
-      x: cx + rRad*0.5 + Math.cos(angle)*rRad*1.2,
-      y: cy + Math.sin(angle)*rRad*1.2,
-      label:`R${r}`
-    });
-  }
-
-  // Determine deadlock nodes
-  const deadlockNodes = new Set();
-  if(deadlockCycles) {
-    deadlockCycles.forEach(cycle=>cycle.forEach(n=>deadlockNodes.add(n)));
-  }
-
-  // Draw edges
-  for(let p=0;p<nProc;p++){
-    for(let r=0;r<nRes;r++){
-      const isDeadlockEdge = deadlockCycles && deadlockCycles.some(c=>{
-        for(let i=0;i<c.length;i++){
-          const a=c[i], b=c[(i+1)%c.length];
-          if((a===p&&b===nProc+r)||(a===nProc+r&&b===p)) return true;
+  // ── Draw edges ─────────────────────────────────────────────
+  for (let p = 0; p < nProc; p++) {
+    for (let r = 0; r < nRes; r++) {
+      const isDL = deadlockCycles && deadlockCycles.some(c => {
+        for (let i = 0; i < c.length; i++) {
+          const a = c[i], b = c[(i+1)%c.length];
+          if ((a===p && b===nProc+r) || (a===nProc+r && b===p)) return true;
         }
         return false;
       });
 
-      if(requested[p][r]>0){
-        // P→R: request edge (dashed)
-        drawArrow(ctx, procPositions[p], resPositions[r], isDeadlockEdge?'#ff4d6d':'#ffb800', isDeadlockEdge?2:1, true, isDeadlockEdge);
+      const pPos = nodePositions[`P${p}`];
+      const rPos = nodePositions[`R${r}`];
+      if (!pPos || !rPos) continue;
+
+      if (requested[p][r] > 0) {
+        // P → R  (request, dashed)
+        drawArrow(ctx, pPos, rPos, isDL ? '#ff4d6d' : '#ffb800', isDL ? 2.5 : 1.5, true,  isDL, NODE_R, RES_HALF, false);
       }
-      if(allocated[p][r]>0){
-        // R→P: assignment edge (solid)
-        drawArrow(ctx, resPositions[r], procPositions[p], isDeadlockEdge?'#ff4d6d':'#00e5ff', isDeadlockEdge?2:1, false, isDeadlockEdge);
+      if (allocated[p][r] > 0) {
+        // R → P  (assignment, solid)
+        drawArrow(ctx, rPos, pPos, isDL ? '#ff4d6d' : '#00e5ff', isDL ? 2.5 : 1.5, false, isDL, RES_HALF, NODE_R, true);
       }
     }
   }
 
-  // Draw nodes
-  const nodeR = 22;
-  for(let p=0;p<nProc;p++){
-    const pos = procPositions[p];
-    const isDL = deadlockNodes.has(p);
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, nodeR, 0, Math.PI*2);
-    ctx.fillStyle = isDL ? '#ff4d6d22' : '#00e5ff11';
-    ctx.fill();
-    ctx.strokeStyle = isDL ? '#ff4d6d' : '#00e5ff';
-    ctx.lineWidth = isDL ? 2.5 : 1.5;
-    ctx.stroke();
-    ctx.fillStyle = isDL ? '#ff4d6d' : '#00e5ff';
-    ctx.font = 'bold 12px Share Tech Mono';
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(pos.label, pos.x, pos.y);
-    if(isDL) {
+  // ── Draw process nodes (circles) ───────────────────────────
+  for (let p = 0; p < nProc; p++) {
+    const pos   = nodePositions[`P${p}`];
+    const isDL  = dlNodes.has(p);
+    const color = isDL ? '#ff4d6d' : '#00e5ff';
+    const fill  = isDL ? '#ff4d6d22' : '#00e5ff11';
+
+    if (isDL) {
+      // outer pulse ring
       ctx.beginPath();
-      ctx.arc(pos.x, pos.y, nodeR+5, 0, Math.PI*2);
-      ctx.strokeStyle='#ff4d6d44'; ctx.lineWidth=1; ctx.stroke();
+      ctx.arc(pos.x, pos.y, NODE_R + 7, 0, Math.PI*2);
+      ctx.strokeStyle = '#ff4d6d33'; ctx.lineWidth = 1.5; ctx.stroke();
     }
-  }
 
-  for(let r=0;r<nRes;r++){
-    const pos = resPositions[r];
-    const isDL = deadlockNodes.has(nProc+r);
-    const sq = nodeR*1.5;
     ctx.beginPath();
-    ctx.rect(pos.x-sq/2, pos.y-sq/2, sq, sq);
-    ctx.fillStyle = isDL ? '#ff4d6d22' : '#39ff1411';
-    ctx.fill();
-    ctx.strokeStyle = isDL ? '#ff4d6d' : '#39ff14';
-    ctx.lineWidth = isDL ? 2.5 : 1.5;
-    ctx.stroke();
-    ctx.fillStyle = isDL ? '#ff4d6d' : '#39ff14';
+    ctx.arc(pos.x, pos.y, NODE_R, 0, Math.PI*2);
+    ctx.fillStyle = fill; ctx.fill();
+    if (isDL) { ctx.shadowColor = color; ctx.shadowBlur = 14; }
+    ctx.strokeStyle = color; ctx.lineWidth = isDL ? 2.5 : 1.5; ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = color;
     ctx.font = 'bold 12px Share Tech Mono';
-    ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillText(pos.label, pos.x, pos.y);
-    // Show allocation dots
-    const allocCount = allocated.reduce((s,row)=>s+row[r],0);
-    if(allocCount>0){
-      ctx.fillStyle='#39ff1466';
-      ctx.font='9px Share Tech Mono';
-      ctx.fillText(`×${allocCount}`, pos.x+sq/2+8, pos.y-4);
-    }
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(`P${p}`, pos.x, pos.y);
+
+    // drag handle indicator (small corner dot)
+    ctx.beginPath();
+    ctx.arc(pos.x + NODE_R - 5, pos.y - NODE_R + 5, 3, 0, Math.PI*2);
+    ctx.fillStyle = color + '88'; ctx.fill();
   }
 
-  // Legend
-  ctx.font='10px Share Tech Mono';
-  ctx.fillStyle='#00e5ff88';
-  ctx.fillText('── assigned (R→P)', 14, H-38);
-  ctx.fillStyle='#ffb80088';
-  ctx.fillText('- - request (P→R)', 14, H-22);
-  ctx.fillStyle='#ff4d6d88';
-  ctx.fillText('● deadlock cycle', 14, H-8);
+  // ── Draw resource nodes (squares) ──────────────────────────
+  for (let r = 0; r < nRes; r++) {
+    const pos   = nodePositions[`R${r}`];
+    const isDL  = dlNodes.has(nProc + r);
+    const color = isDL ? '#ff4d6d' : '#39ff14';
+    const fill  = isDL ? '#ff4d6d22' : '#39ff1411';
+    const sq    = RES_HALF * 2;
+
+    ctx.beginPath();
+    ctx.rect(pos.x - RES_HALF, pos.y - RES_HALF, sq, sq);
+    ctx.fillStyle = fill; ctx.fill();
+    if (isDL) { ctx.shadowColor = color; ctx.shadowBlur = 14; }
+    ctx.strokeStyle = color; ctx.lineWidth = isDL ? 2.5 : 1.5; ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = color;
+    ctx.font = 'bold 12px Share Tech Mono';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(`R${r}`, pos.x, pos.y);
+
+    // alloc count badge
+    const allocCount = allocated.reduce((s, row) => s + row[r], 0);
+    if (allocCount > 0) {
+      ctx.fillStyle = color + '99';
+      ctx.font = '9px Share Tech Mono';
+      ctx.fillText(`×${allocCount}`, pos.x + RES_HALF + 8, pos.y - 4);
+    }
+
+    // drag handle
+    ctx.beginPath();
+    ctx.arc(pos.x + RES_HALF - 4, pos.y - RES_HALF + 4, 3, 0, Math.PI*2);
+    ctx.fillStyle = color + '88'; ctx.fill();
+  }
+
+  // ── Legend ────────────────────────────────────────────────
+  ctx.font = '10px Share Tech Mono';
+  ctx.fillStyle = '#00e5ff88';
+  ctx.fillText('── assigned (R→P)', 14, H - 38);
+  ctx.fillStyle = '#ffb80088';
+  ctx.fillText('- - request (P→R)', 14, H - 22);
+  ctx.fillStyle = '#ff4d6d88';
+  ctx.fillText('● deadlock cycle', 14, H - 8);
 }
 
-function drawArrow(ctx, from, to, color, width, dashed, glow){
-  const dx=to.x-from.x, dy=to.y-from.y;
-  const len=Math.sqrt(dx*dx+dy*dy);
-  const nx=dx/len, ny=dy/len;
-  const nodeR=22;
-  const sx=from.x+nx*nodeR, sy=from.y+ny*nodeR;
-  const ex=to.x-nx*nodeR,   ey=to.y-ny*nodeR;
+// ── Arrow drawing (handles both circle and square endpoints) ──
+function drawArrow(ctx, from, to, color, width, dashed, glow, fromHalf, toHalf, toIsCircle) {
+  const dx = to.x - from.x, dy = to.y - from.y;
+  const len = Math.sqrt(dx*dx + dy*dy);
+  if (len < 1) return;
+  const nx = dx/len, ny = dy/len;
+
+  // Start offset: leave gap from source node edge
+  const sx = from.x + nx * fromHalf;
+  const sy = from.y + ny * fromHalf;
+
+  // End offset: leave gap from target node edge
+  const ex = to.x - nx * toHalf;
+  const ey = to.y - ny * toHalf;
 
   ctx.save();
-  if(glow){ ctx.shadowColor=color; ctx.shadowBlur=10; }
-  ctx.strokeStyle=color; ctx.lineWidth=width;
-  if(dashed) ctx.setLineDash([5,4]); else ctx.setLineDash([]);
-  ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(ex,ey); ctx.stroke();
+  if (glow) { ctx.shadowColor = color; ctx.shadowBlur = 12; }
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = width;
+  if (dashed) ctx.setLineDash([6, 4]); else ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
 
   // Arrowhead
   ctx.setLineDash([]);
-  const angle=Math.atan2(ey-sy,ex-sx);
-  const al=10, aw=5;
-  ctx.fillStyle=color;
+  const angle = Math.atan2(ey - sy, ex - sx);
+  ctx.fillStyle = color;
   ctx.beginPath();
-  ctx.moveTo(ex,ey);
-  ctx.lineTo(ex-al*Math.cos(angle-0.4),ey-al*Math.sin(angle-0.4));
-  ctx.lineTo(ex-al*Math.cos(angle+0.4),ey-al*Math.sin(angle+0.4));
+  ctx.moveTo(ex, ey);
+  ctx.lineTo(ex - 11 * Math.cos(angle - 0.38), ey - 11 * Math.sin(angle - 0.38));
+  ctx.lineTo(ex - 11 * Math.cos(angle + 0.38), ey - 11 * Math.sin(angle + 0.38));
   ctx.closePath(); ctx.fill();
   ctx.restore();
 }
 
 // ============================================================
-// INIT
+// INIT & EVENT BINDING
 // ============================================================
-window.addEventListener('load',()=>{
+window.addEventListener('load', () => {
+  const canvas = document.getElementById('rag-canvas');
+
+  // Mouse events
+  canvas.addEventListener('mousedown',  onPointerDown);
+  canvas.addEventListener('mousemove',  onPointerMove);
+  canvas.addEventListener('mouseup',    onPointerUp);
+  canvas.addEventListener('mouseleave', onPointerUp);
+
+  // Touch events
+  canvas.addEventListener('touchstart',  onPointerDown, { passive:false });
+  canvas.addEventListener('touchmove',   onPointerMove, { passive:false });
+  canvas.addEventListener('touchend',    onPointerUp);
+  canvas.addEventListener('touchcancel', onPointerUp);
+
   loadPreset('deadlock');
-  setTimeout(()=>{ drawRAG(); },100);
+  setTimeout(() => { initPositions(); drawRAG(); }, 100);
 });
-window.addEventListener('resize', ()=>{ drawRAG(); });
+
+window.addEventListener('resize', () => { drawRAG(lastCycles); });
 </script>
 </body>
 </html>
